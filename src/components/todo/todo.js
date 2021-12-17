@@ -48,6 +48,9 @@ const ToDo = () => {
   const changePage = (page) => {
     setCurrentPage(page);
   }
+  const changeItems = (e) => {
+    settings.updateItemsPerPage(e.target.value);
+  }
   return (
     <>
       <form onSubmit={handleSubmit} className="form-container bp3-elevation-3">
@@ -73,16 +76,24 @@ const ToDo = () => {
             onClick={settings.updateShow}>{settings.showCompleted ? 'Hide Completed' : 'Show Completed'} </button>
         </label>
         <br/>
+        <select  className="form-select form-select-sm" aria-label="Default select example" onChange={(e)=>changeItems(e)}>
+          <option defaultValue value={settings.itemsPerPage}>{settings.itemsPerPage}</option>
+          <option value="2">2</option>
+          <option value="4">4</option>
+          <option value="6">6</option>
+          <option value="8">8</option>
+          <option value="10">10</option>
+        </select>
+        <br />
         <h5>To Do List: {incomplete} items pending</h5>
       </form>
 
       <div className="cardsContainer" >
         {itemsInPage.map(item => (
-          <List list={item} toggleComplete={toggleComplete} data='uncompleted' />))}
-        
+          <List list={item} toggleComplete={toggleComplete} deleteItem={deleteItem} />))}
         <br />
         <Pagination itemsPerPage={settings.itemsPerPage} totalItems={filteredList.length}
-        currentPage={currentPage} changePage={changePage} />
+          currentPage={currentPage} changePage={changePage} />
       </div>
     </>
   );
